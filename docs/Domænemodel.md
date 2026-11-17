@@ -1,6 +1,8 @@
 
 # Domænemodel – Svømmeklubben Delfinen
 
+*Mandag d. 16. november*
+
 ```mermaid
 classDiagram
 direction LR
