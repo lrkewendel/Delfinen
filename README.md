@@ -7,4 +7,5 @@
 | Frederik | FredeVNN | 
 | Ajla | mocina1225 |
 | Lærke | lrkewendel |
-| Mikkel |  |
+| Mikkel | Hunniche |  
+
