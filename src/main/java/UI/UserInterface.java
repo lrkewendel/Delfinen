@@ -3,6 +3,7 @@ package UI;
 import domainmodel.Controller;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -33,10 +34,35 @@ public class UserInterface {
     }
 
     private void welcomeMessage(){
-        String blue = "\u001B[1;34m";
+        //Farver og figur til pynt:
+        String LIGHTBLUE = "\u001B[38;5;39m";
+        String DARKBLUE = "\u001B[38;5;21m";
+        String RESET = "\u001B[0m";
         String dolphin = "\uD83D\uDC2C";
-        String reset = "\u001B[0m";
 
-        System.out.println(blue + "Velkommen til svømmeklubben Delfinen " + dolphin + reset + "\n");
+        //Printer pæn overskrift:
+        String[] HeadLine = {
+                "██████╗ ███████╗██╗     ███████╗██╗███╗   ██╗███████╗███╗   ██╗",
+                "██╔══██╗██╔════╝██║     ██╔════╝██║████╗  ██║██╔════╝████╗  ██║",
+                "██║  ██║█████╗  ██║     █████╗  ██║██╔██╗ ██║█████╗  ██╔██╗ ██║",
+                "██║  ██║██╔══╝  ██║     ██╔══╝  ██║██║╚██╗██║██╔══╝  ██║╚██╗██║",
+                "██████╔╝███████╗███████╗██║     ██║██║ ╚████║███████╗██║ ╚████║",
+                "╚═════╝ ╚══════╝╚══════╝╚═╝     ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═══╝"
+        };
+
+        for (String line : HeadLine) {
+            for (char symbol : line.toCharArray()) {
+                if (symbol == '█') {
+                    System.out.print(LIGHTBLUE + symbol);
+                } else if (symbol != ' ') {
+                    System.out.print(DARKBLUE + symbol);
+                } else {
+                    System.out.print(symbol);
+                }
+            }
+            System.out.println(RESET);
+        }
+
+        System.out.println("\n                Velkommen til svømmeklubben" + dolphin + "\n\n");
     }
 }
