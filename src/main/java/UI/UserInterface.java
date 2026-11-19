@@ -22,13 +22,32 @@ public class UserInterface {
         welcomeMessage();
 
         while (running){
-            //metode til hvad brugerens muligheder er
-            System.out.println("Hvad kunne du tænke dig at gøre?");
+
+            System.out.println("Vælg mellem en af de følgende stillinger ved at indtaste stillingsbetegnelsen: ");
+            System.out.println("| Formand | Kasserer | Træner |");
+
+            String chosenPosition = scanner.nextLine();
             String choice = scanner.nextLine();
 
-            switch (choice){
-                // oprette muligheder
-                default -> System.out.println("Den handling er desværre ikke mulig. Prøv igen!");
+            if (chosenPosition.equalsIgnoreCase("Formand")){
+                switch (choice){
+                    case "Opret" -> System.out.println();
+                    default -> System.out.println("Den handling er desværre ikke mulig. Prøv igen!");
+                }
+            }
+
+            if (chosenPosition.equalsIgnoreCase("Kasserer")){
+                switch (choice){
+                    case "Se" -> System.out.println();
+                    default -> System.out.println("Den handling er desværre ikke mulig. Prøv igen!");
+                }
+            }
+
+            if (chosenPosition.equalsIgnoreCase("Træner")){
+                switch (choice){
+                    case "Se" -> System.out.println();
+                    default -> System.out.println("Den handling er desværre ikke mulig. Prøv igen!");
+                }
             }
         }
     }
