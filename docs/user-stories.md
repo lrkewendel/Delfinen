@@ -14,7 +14,7 @@ Som formand vil jeg gerne kunne vælge én eller flere discipliner, når jeg opr
 - Når: Formanden vælger én eller flere af de fire discipliner.
 - Så: Bliver konkurrencesvømmeren oprettet med de valgte discipliner. Det er ikke muligt at oprette medlemmet uden mindst én disciplin.
 
-## US-03 Tildel medlemsnymre (dækker: skelne medlemmer) Størrelse: S Status: To do
+## US-03 Tildel medlemsnumre (dækker: skelne medlemmer) Størrelse: S Status: To do
 
 Som formand vil jeg gerne have, at systemet automatisk tildeler hvert nyt medlem et unikt medlemsnummer, så jeg nemt kan identificere og skelne mellem medlemmerne.
 
