@@ -40,7 +40,21 @@ public class Member {
     }
 
     public int getPriceForMembership(){
-        return priceForMembership;
+        return calculateFee(LocalDate.now());
     }
 
+    public int calculateFee(LocalDate date) {
+        if ("Passiv".equalsIgnoreCase(activityForm)) {
+            return 500;
+        }
+        int age = Period.between(birthDate, date).getYears();
+
+        if (age < 18) {
+            return 1000;
+        }
+        if (age >= 60) {
+            return 1200;
+        }
+        return 1600;
+    }
 }
