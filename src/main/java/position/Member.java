@@ -7,6 +7,7 @@ import java.time.Period;
 
 public class Member {
 
+    private int iD;
     private String name;
     private LocalDate birthDate;
     private String address;
@@ -16,7 +17,8 @@ public class Member {
     private Discipline discipline;
     private int priceForMembership;
 
-    public Member(String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership){
+    public Member(int iD, String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership){
+        this.iD = iD;
         this.name = name;
         this.birthDate = birthDate;
         this.address = address;
@@ -26,6 +28,8 @@ public class Member {
         this.discipline = discipline;
         this.priceForMembership = priceForMembership;
     }
+
+    public int getiD() {return iD;}
 
     public String getName(){
         return name;
@@ -47,13 +51,9 @@ public class Member {
         return email;
     }
 
-    public int getPhone() {
-        return phone;
-    }
+    public int getPhone() {return phone;}
 
-    public boolean isActive(){
-        return isActive;
-    }
+    public boolean isActive(){return isActive;}
 
     public Discipline getDiscipline() {
         return discipline;

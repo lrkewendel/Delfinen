@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class FileHandler {
 
     private String fileName;
-    private static final String HEADER = "name;birthDate;address;email;phone;isActive;discipline;priceForMembership;trainingResult;competitionResult";
+    private static final String HEADER = "iD;name;birthDate;address;email;phone;isActive;discipline;priceForMembership;trainingResult;competitionResult";
     private int skippedLineCount;
 
     public FileHandler(String fileName) {
@@ -46,7 +46,8 @@ public class FileHandler {
             competitionResult = String.valueOf(athleteMember.getCompetitionResult());
         }
 
-        return member.getName() + ";"
+        return member.getiD() + ";"
+                +member.getName() + ";"
                 +member.birthDate() + ";"
                 +member.getAddress() + ";"
                 +member.getEmail() + ";"
@@ -95,28 +96,29 @@ public class FileHandler {
     private Member parseMember(String line){
         String[] fields = line.split(";", -1);
 
-        if(fields.length != 10){
+        if(fields.length != 11){
             return null;
         }
 
         try {
-            String name = fields[0];
-            LocalDate birthDate = LocalDate.parse(fields[1]);
-            String address = fields[2];
-            String email = fields[3];
-            int phone = Integer.parseInt(fields[4]);
-            boolean isActive = Boolean.parseBoolean(fields[5]);
-            Discipline discipline = Discipline.valueOf(fields[6]);
-            int priceForMembership = Integer.parseInt(fields[7]);
+            int iD = Integer.parseInt(fields[0]);
+            String name = fields[1];
+            LocalDate birthDate = LocalDate.parse(fields[2]);
+            String address = fields[3];
+            String email = fields[4];
+            int phone = Integer.parseInt(fields[5]);
+            boolean isActive = Boolean.parseBoolean(fields[6]);
+            Discipline discipline = Discipline.valueOf(fields[7]);
+            int priceForMembership = Integer.parseInt(fields[8]);
 
-            if(!fields[8].isEmpty() && !fields[9].isEmpty()){
+            if(!fields[9].isEmpty() && !fields[10].isEmpty()){
 
-                int trainingResult = Integer.parseInt(fields[8]);
-                int competitionResult = Integer.parseInt(fields[9]);
+                int trainingResult = Integer.parseInt(fields[9]);
+                int competitionResult = Integer.parseInt(fields[10]);
 
-                return new AthleteMember(name, birthDate, address, email, phone, isActive, discipline, priceForMembership, null, trainingResult, competitionResult, null);
+                return new AthleteMember(iD, name, birthDate, address, email, phone, isActive, discipline, priceForMembership, null, trainingResult, competitionResult, null);
             } else {
-                return new Member(name, birthDate, address, email, phone, isActive, discipline, priceForMembership);
+                return new Member(iD, name, birthDate, address, email, phone, isActive, discipline, priceForMembership);
             }
         }
 
