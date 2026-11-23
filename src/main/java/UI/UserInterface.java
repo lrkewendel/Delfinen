@@ -6,6 +6,7 @@ import datasource.FileHandler;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -40,7 +41,7 @@ public class UserInterface {
 
             if (chosenPosition.equalsIgnoreCase("Kasserer")){
                 switch (choice){
-                    case "Se" -> System.out.println();
+                    case "Se" -> showMembershipFees();
                     default -> System.out.println("Den handling er desværre ikke mulig. Prøv igen!");
                 }
             }
@@ -85,5 +86,20 @@ public class UserInterface {
         }
 
         System.out.println("\n                Velkommen til svømmeklubben" + dolphin + "\n\n");
+    }
+    private void showMembershipFees() {
+        List<Member> members = controller.getMembers();
+
+        if (members.isEmpty()) {
+            System.out.println("Der er ingen medlemmer endnu");
+            return;
+        }
+        System.out.println("Medlemmernes årlige kontingent: ");
+
+        for (Member member : members) {
+            int fee = controller.getMembershipFee(member);
+
+            System.out.println(member.getName() + ":" + fee);
+        }
     }
 }

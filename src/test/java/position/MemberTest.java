@@ -1,79 +1,121 @@
 package position;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+class MemberTest {
 
-public class MemberTest {
+    private Member youngMember;
+    private Member olderMember;
+    private Member passiveYoungMember;
+    private Member passiveAdultMember;
+    private Member passiveOlderMember;
 
-    private Member createMember(LocalDate birthDate, String activityForm) {
-        return new Member("Test", birthDate, "Testvej 1", "test@example.com", 12345678, activityForm, 0);
+    @BeforeEach
+    void setUp() {
+        youngMember = new Member("Ung aktiv", LocalDate.of(2008, 11, 22), "Testvej 1", "ung@example.com", 12345678, "Motionist", 0);
+
+        olderMember = new Member("Ældre aktiv", LocalDate.of(1966, 11, 22), "Testvej 2", "ældre@example.com", 12345678, "Motionist", 0);
+
+        passiveYoungMember = new Member("Ung passiv", LocalDate.of(2009, 11, 22), "Testvej 3", "passivung@example.com", 12345678, "Passiv", 0);
+
+        passiveAdultMember = new Member("Voksen passiv", LocalDate.of(1996, 11, 22), "Testvej 4", "passivvoksen@example.com", 12345678, "Passiv", 0);
+
+        passiveOlderMember = new Member("Ældre passiv", LocalDate.of(1966, 11, 22), "Testvej 5", "passivældre@example.com", 12345678, "Passiv", 0);
     }
 
     @Test
-    void passiveMemberPays500() {
+    void passiveMemberUnder18Pays500() {
         // Arrange
-        Member member = createMember(LocalDate.of(1966, 11, 22), "Passiv");
         LocalDate date = LocalDate.of(2026, 11, 22);
 
         // Act
-        int actualFee = member.calculateFee(date);
+        int actualFee = passiveYoungMember.calculateFee(date);
 
         // Assert
         assertEquals(500, actualFee);
     }
 
     @Test
-    void activeMemberUnder18Pays1000() {
+    void passiveMemberBetween18And59Pays500() {
         // Arrange
-        Member member = createMember(LocalDate.of(2008, 11, 22), "Motionist");
+        LocalDate date = LocalDate.of(2026, 11, 22);
+
+        // Act
+        int actualFee = passiveAdultMember.calculateFee(date);
+
+        // Assert
+        assertEquals(500, actualFee);
+    }
+
+    @Test
+    void passiveMemberAt60Pays500() {
+        // Arrange
+        LocalDate date = LocalDate.of(2026, 11, 22);
+
+        // Act
+        int actualFee = passiveOlderMember.calculateFee(date);
+
+        // Assert
+        assertEquals(500, actualFee);
+    }
+
+    @Test
+    void activeMemberDayBeforeEighteenthBirthdayPays1000() {
+        // Arrange
         LocalDate date = LocalDate.of(2026, 11, 21);
 
         // Act
-        int actualFee = member.calculateFee(date);
+        int actualFee = youngMember.calculateFee(date);
 
         // Assert
         assertEquals(1000, actualFee);
     }
 
     @Test
-    void activeMemberPays1600On18sBirthday() {
+    void activeMemberOnEighteenthBirthdayPays1600() {
         // Arrange
-        Member member = createMember(LocalDate.of(2008, 11, 22), "Motionist");
         LocalDate date = LocalDate.of(2026, 11, 22);
 
         // Act
-        int actualFee = member.calculateFee(date);
+        int actualFee = youngMember.calculateFee(date);
 
         // Assert
         assertEquals(1600, actualFee);
     }
 
     @Test
-    void activeMemberPays1600Before60sBirthday() {
+    void activeMemberDayBeforeSixtiethBirthdayPays1600() {
         // Arrange
-        Member member = createMember(LocalDate.of(1966, 11, 22), "Motionist");
         LocalDate date = LocalDate.of(2026, 11, 21);
 
         // Act
-        int actualFee = member.calculateFee(date);
+        int actualFee = olderMember.calculateFee(date);
 
         // Assert
         assertEquals(1600, actualFee);
     }
 
     @Test
-    void activeMemberPays1200On60Birthday() {
+    void activeMemberOnSixtiethBirthdayPays1200() {
         // Arrange
-        Member member = createMember(LocalDate.of(1966, 11, 22), "Motionist");
         LocalDate date = LocalDate.of(2026, 11, 22);
 
         // Act
-        int actualFee = member.calculateFee(date);
+        int actualFee = olderMember.calculateFee(date);
 
         // Assert
         assertEquals(1200, actualFee);
+    }
+
+    @Test
+    void futureBirthDateIsRejected() {
+        // Arrange
+        LocalDate futureBirthDate = LocalDate.now().plusDays(1);
+
+        // Act + Assert
+        assertThrows(IllegalArgumentException.class, () -> new Member("Test", futureBirthDate, "Testvej 1", "test@example.com", 12345678, "Motionist", 0));
     }
 }

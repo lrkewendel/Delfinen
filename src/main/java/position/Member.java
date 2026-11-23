@@ -2,6 +2,7 @@ package position;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 public class Member {
 
@@ -14,6 +15,11 @@ public class Member {
     private int priceForMembership;
 
     public Member(String name, LocalDate birthDate, String address, String email, int phone, String activityForm, int priceForMembership){
+        if (birthDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException(
+                    "Fødselsdatoen må ikke være i fremtiden"
+            );
+        }
         this.name = name;
         this.birthDate = birthDate;
         this.address = address;
@@ -47,7 +53,7 @@ public class Member {
         if ("Passiv".equalsIgnoreCase(activityForm)) {
             return 500;
         }
-        int age = Period.between(birthDate, date).getYears();
+        long age = ChronoUnit.YEARS.between(birthDate, date);
 
         if (age < 18) {
             return 1000;
