@@ -37,6 +37,11 @@ public class FileHandlerTest {
         Member member3 = new Member(3, "Maiken", LocalDate.of(2000, 12, 12), "Nørrebro 1", "Maik12en@hotmail.com", 23068900, false, Discipline.BACKSTROKE, 500);
         Member member4 = new AthleteMember(49, "Jens", LocalDate.of(1997, 05, 12), "Amagerbrogade 1", "Jens2@hotmail.com", 23556700, true, Discipline.BUTTERFLY, 2000, null, 10, 20, null);
 
+        members.add(member1);
+        members.add(member2);
+        members.add(member3);
+        members.add(member4);
+
         //Act:
         fileHandler.saveMembers(members);
         List<Member> loadedMembers = fileHandler.loadMembers();
@@ -58,15 +63,43 @@ public class FileHandlerTest {
 
         Member loadedSecond = loadedMembers.get(1);
 
-        //indsæt
+        assertEquals(2, loadedSecond.getiD());
+        assertEquals("Bo", loadedSecond.getName());
+        assertEquals(LocalDate.of(1997, 12, 10), loadedSecond.birthDate());
+        assertEquals("Dronningegade 1", loadedSecond.getAddress());
+        assertEquals("Bobo@hotmail.com", loadedSecond.getEmail());
+        assertEquals(20445566, loadedSecond.getPhone());
+        assertEquals(false, loadedSecond.isActive());
+        assertEquals(Discipline.BACKSTROKE, loadedSecond.getDiscipline());
+        assertEquals(500, loadedSecond.getPriceForMembership());
 
-        Member loadedthird = loadedMembers.get(2);
+        Member loadedThird = loadedMembers.get(2);
 
-        //indsæt
+        assertEquals(3, loadedThird.getiD());
+        assertEquals("Maiken", loadedThird.getName());
+        assertEquals(LocalDate.of(2000, 12, 12), loadedThird.birthDate());
+        assertEquals("Nørrebro 1", loadedThird.getAddress());
+        assertEquals("Maik12en@hotmail.com", loadedThird.getEmail());
+        assertEquals(23068900, loadedThird.getPhone());
+        assertEquals(false, loadedThird.isActive());
+        assertEquals(Discipline.BACKSTROKE, loadedThird.getDiscipline());
+        assertEquals(500, loadedThird.getPriceForMembership());
 
-        Member loadedfourth = loadedMembers.get(3);
+        AthleteMember loadedFourth = (AthleteMember) loadedMembers.get(3);
 
-        //indsæt
+        assertEquals(49, loadedFourth.getiD());
+        assertEquals("Jens", loadedFourth.getName());
+        assertEquals(LocalDate.of(1997, 05, 12), loadedFourth.birthDate());
+        assertEquals("Amagerbrogade 1", loadedFourth.getAddress());
+        assertEquals("Jens2@hotmail.com", loadedFourth.getEmail());
+        assertEquals(23556700, loadedFourth.getPhone());
+        assertEquals(true, loadedFourth.isActive());
+        assertEquals(Discipline.BUTTERFLY, loadedFourth.getDiscipline());
+        assertEquals(2000, loadedFourth.getPriceForMembership());
+        assertEquals(null, loadedFourth.getTrainer());
+        assertEquals(10, loadedFourth.getTrainingResult());
+        assertEquals(20, loadedFourth.getCompetitionResult());
+        assertEquals(null, loadedFourth.getSuccession());
     }
 
     @Test
@@ -103,16 +136,23 @@ public class FileHandlerTest {
         //Arrange:
         FileHandler fileHandler = new FileHandler(TEST_FILE);
         PrintStream out = new PrintStream(new File(TEST_FILE), "UTF-8");
-        out.println("iD;name;birthDate;address;email;phone;isActive;discipline;priceForMembership;trainer;trainingResult;competitionResult;succession");
+        out.println("iD;name;birthDate;address;email;phone;isActive;discipline;priceForMembership;trainingResult;competitionResult");
 
-        //indsæt alle eksempler i out.println()
+        out.println("1;Asker;1997-12-12;Kongensgade 1;Asker12@hotmail.com;78958900;true;CRAWL;1500;;");
+        out.println("1;Bo;1997-12-10;Dronningegade 1;Bobo@hotmail.com;20445566;false;BACKSTROKE;500;;");
+        out.println("1;Maiken;2000-12-12;Nørrebro 1;Maik12en@hotmail.com;23068900;false;BACKSTROKE;500;;");
+        out.println("1;Jens;1997-05-12;Amagerbrogade 1;Jens2@hotmail.com;23556700;true;BUTTERFLY;2000;10;20");
+
+        out.println("IKKE_ET_TAL;Bo;1997-12-10;Dronningegade 1;Bobo@hotmail.com;20445566;false;BACKSTROKE;500;;");
+        out.println("3;Maiken;ugyldig-dato");
+
         out.close();
 
         //Act:
         List<Member> loadedMembers = fileHandler.loadMembers();
 
         //Assert:
-        assertEquals(1, loadedMembers.size());
+        assertEquals(4, loadedMembers.size());
         assertEquals(1, loadedMembers.get(0).getiD());
         assertEquals(2, fileHandler.getSkippedLineCount());
     }
