@@ -4,6 +4,7 @@ import DelfinenSwimTypes.Discipline;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 public class Member {
 
@@ -18,6 +19,9 @@ public class Member {
     private int priceForMembership;
 
     public Member(int iD, String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership){
+        if (birthDate == null || birthDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Fødselsdatoen må ikke være i fremtiden");
+        }
         this.iD = iD;
         this.name = name;
         this.birthDate = birthDate;
@@ -60,7 +64,22 @@ public class Member {
     }
 
     public int getPriceForMembership(){
+        priceForMembership = calculateFee(LocalDate.now());
         return priceForMembership;
     }
 
+    public int calculateFee(LocalDate date) {
+        if (!isActive) {
+            return 500;
+        }
+        long age = ChronoUnit.YEARS.between(birthDate, date);
+
+        if (age < 18) {
+            return 1000;
+        }
+        if (age >= 60) {
+            return 1200;
+        }
+        return 1600;
+    }
 }
