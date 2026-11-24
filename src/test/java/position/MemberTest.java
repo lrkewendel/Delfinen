@@ -1,5 +1,6 @@
 package position;
 
+import DelfinenSwimTypes.Discipline;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
@@ -15,15 +16,15 @@ class MemberTest {
 
     @BeforeEach
     void setUp() {
-        youngMember = new Member("Ung aktiv", LocalDate.of(2008, 11, 22), "Testvej 1", "ung@example.com", 12345678, "Motionist", 0);
+        youngMember = new Member(18,"Ung aktiv", LocalDate.of(2008, 11, 22), "Testvej 1", "ung@example.com", 12345678, true, Discipline.CRAWL,0);
 
-        olderMember = new Member("Ældre aktiv", LocalDate.of(1966, 11, 22), "Testvej 2", "ældre@example.com", 12345678, "Motionist", 0);
+        olderMember = new Member(60,"Ældre aktiv", LocalDate.of(1966, 11, 22), "Testvej 2", "ældre@example.com", 12345678, true, Discipline.CRAWL,0);
 
-        passiveYoungMember = new Member("Ung passiv", LocalDate.of(2009, 11, 22), "Testvej 3", "passivung@example.com", 12345678, "Passiv", 0);
+        passiveYoungMember = new Member(17,"Ung passiv", LocalDate.of(2009, 11, 22), "Testvej 3", "passivung@example.com", 12345678, false, Discipline.CRAWL,0);
 
-        passiveAdultMember = new Member("Voksen passiv", LocalDate.of(1996, 11, 22), "Testvej 4", "passivvoksen@example.com", 12345678, "Passiv", 0);
+        passiveAdultMember = new Member(30,"Voksen passiv", LocalDate.of(1996, 11, 22), "Testvej 4", "passivvoksen@example.com", 12345678, false, Discipline.CRAWL,0);
 
-        passiveOlderMember = new Member("Ældre passiv", LocalDate.of(1966, 11, 22), "Testvej 5", "passivældre@example.com", 12345678, "Passiv", 0);
+        passiveOlderMember = new Member(60,"Ældre passiv", LocalDate.of(1966, 11, 22), "Testvej 5", "passivældre@example.com", 12345678, false, Discipline.CRAWL,0);
     }
 
     @Test
@@ -116,6 +117,6 @@ class MemberTest {
         LocalDate futureBirthDate = LocalDate.now().plusDays(1);
 
         // Act + Assert
-        assertThrows(IllegalArgumentException.class, () -> new Member("Test", futureBirthDate, "Testvej 1", "test@example.com", 12345678, "Motionist", 0));
+        assertThrows(IllegalArgumentException.class, () -> new Member(0,"Test", futureBirthDate, "Testvej 1", "test@example.com", 12345678, true, Discipline.BUTTERFLY,0));
     }
 }
