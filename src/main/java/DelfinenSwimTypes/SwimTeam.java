@@ -1,20 +1,34 @@
 package DelfinenSwimTypes;
 
 import position.AthleteMember;
+import position.Member;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SwimTeam {
 
-    private Discipline discipline;
-    private boolean teamType;
-    private AthleteMember athlete;
+    private List<AthleteMember> seniorTeam = new ArrayList<>();
+    private List<AthleteMember> juniorTeam = new ArrayList<>();
 
-    public SwimTeam(Discipline discipline, boolean teamType, AthleteMember athlete){
-        this.discipline = discipline;
-        this.teamType = teamType;
-        this.athlete = athlete;
+    public void sortMembers(List<Member> MembersFromFile) {
+
+        for (Member member : MembersFromFile) {
+            if (member instanceof AthleteMember athleteMember) {
+                if (athleteMember.getAge() >= 18) {
+                    seniorTeam.add(athleteMember);
+                } else {
+                    juniorTeam.add(athleteMember);
+                }
+            }
+        }
     }
 
-    public boolean isTeamType(){
-        return teamType;
+    public List<AthleteMember> getSeniorTeam(){
+        return seniorTeam;
+    }
+
+    public List<AthleteMember> getJuniorTeam(){
+        return juniorTeam;
     }
 }
