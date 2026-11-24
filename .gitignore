@@ -1,0 +1,14 @@
+# Genererede filer fra Maven og IntelliJ
+/target/
+/out/
+*.class
+
+# IntelliJs lokale projektindstillinger
+/.idea/
+*.iml
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
