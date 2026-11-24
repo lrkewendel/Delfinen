@@ -36,6 +36,25 @@ public class UserInterface {
                     case "Opret" -> System.out.println();
                     default -> System.out.println("Den handling er desværre ikke mulig. Prøv igen!");
                 }
+                ////Man skal skrive bogstaver, ellers kommer der exception:
+                //        if (name == null || name.isBlank()) {
+                //            throw new IllegalArgumentException("Navn må ikke være tomt.");
+                //        }
+                //
+                //        //Afviser kontroltegn i navnet:
+                //        if (name.chars().anyMatch(Character::isISOControl)) {
+                //            throw new IllegalArgumentException("Navn må ikke indeholde tabulatorer eller linjeskift.");
+                //        }
+                //
+                //        //Kontrollere fødselsdatoen (Man kan ikke have en fødselsdag i fremtiden):
+                //        if (birthDate == null || birthDate.isAfter(LocalDate.now())) {
+                //            throw new IllegalArgumentException("Indtast en gyldig fødselsdagsdato.");
+                //        }
+                //
+                //        //Kontrollere disciplintypen:
+                //        if (discipline == null) {
+                //            throw new IllegalArgumentException("Vælg en gyldig disciplin.");
+                //        }
             }
 
             if (chosenPosition.equalsIgnoreCase("Kasserer")){
