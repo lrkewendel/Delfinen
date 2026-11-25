@@ -59,7 +59,8 @@ public class FileHandlerTest {
         assertEquals(78958900, loadedFirst.getPhone());
         assertEquals(true, loadedFirst.isActive());
         assertEquals(Discipline.CRAWL, loadedFirst.getDiscipline());
-        assertEquals(1500, loadedFirst.getPriceForMembership());
+        // Kontingent beregnes ud fra alder og medlemsstatus, ikke konstruktørens beløb.
+        assertEquals(member1.getPriceForMembership(), loadedFirst.getPriceForMembership());
 
         Member loadedSecond = loadedMembers.get(1);
 
@@ -95,7 +96,7 @@ public class FileHandlerTest {
         assertEquals(23556700, loadedFourth.getPhone());
         assertEquals(true, loadedFourth.isActive());
         assertEquals(Discipline.BUTTERFLY, loadedFourth.getDiscipline());
-        assertEquals(2000, loadedFourth.getPriceForMembership());
+        assertEquals(member4.getPriceForMembership(), loadedFourth.getPriceForMembership());
         assertEquals(null, loadedFourth.getTrainer());
         assertEquals(10, loadedFourth.getTrainingResult());
         assertEquals(20, loadedFourth.getCompetitionResult());
