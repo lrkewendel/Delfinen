@@ -66,6 +66,9 @@ public class UserInterface {
             }
 
             if (chosenPosition.equalsIgnoreCase("Træner")){
+
+                System.out.println("Vælg en af følgende handlinger: ");
+                System.out.println("| Se oversigt over Top 5 | Registrer en tid |");
                 switch (choice){
                     case "Se" -> System.out.println();
                     default -> System.out.println("Den handling er desværre ikke mulig. Prøv igen!");

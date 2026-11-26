@@ -8,15 +8,9 @@ import java.util.Map;
 
 public class Trainer {
 
-    private String name;
     private SwimTeam swimTeam;
 
-    public Trainer(String name, SwimTeam swimTeam){
-        this.name = name;
-        this.swimTeam = swimTeam;
-    }
-
-    public String getName(){return name;}
+    public Trainer(SwimTeam swimTeam){this.swimTeam = swimTeam;}
 
     public void registerTrainingResult(AthleteMember athleteMember, int newTime){
         if(newTime > 0 && (athleteMember.getTrainingResult() <=0 || newTime < athleteMember.getTrainingResult())){

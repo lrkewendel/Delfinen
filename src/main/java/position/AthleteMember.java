@@ -15,6 +15,8 @@ public class AthleteMember extends Member{
         this.competitionResult = competitionResult;
     }
 
+    public boolean isActiveInDiscipline(Discipline discipline){return getDiscipline() == discipline;}
+
     public int getTrainingResult(){
         return trainingResult;
     }
