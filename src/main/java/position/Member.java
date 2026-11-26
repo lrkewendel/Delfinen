@@ -19,9 +19,6 @@ public class Member {
     private int priceForMembership;
 
     public Member(int iD, String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership){
-        if (birthDate == null || birthDate.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Fødselsdatoen må ikke være i fremtiden");
-        }
         this.iD = iD;
         this.name = name;
         this.birthDate = birthDate;

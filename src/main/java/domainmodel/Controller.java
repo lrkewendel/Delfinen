@@ -12,6 +12,7 @@ import java.util.List;
 public class Controller {
     FileHandler fileHandler = new FileHandler("members.csv");
     SwimTeam swimTeam = new SwimTeam();
+    private Trainer trainer = new Trainer("Bo", swimTeam);
     private final Cashier cashier = new Cashier();
     private final Chairman chairman = new Chairman();
 

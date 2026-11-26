@@ -116,7 +116,7 @@ public class FileHandler {
                 int trainingResult = Integer.parseInt(fields[9]);
                 int competitionResult = Integer.parseInt(fields[10]);
 
-                return new AthleteMember(iD, name, birthDate, address, email, phone, isActive, discipline, priceForMembership, null, trainingResult, competitionResult, null);
+                return new AthleteMember(iD, name, birthDate, address, email, phone, isActive, discipline, priceForMembership, trainingResult, competitionResult);
             } else {
                 return new Member(iD, name, birthDate, address, email, phone, isActive, discipline, priceForMembership);
             }
