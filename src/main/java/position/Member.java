@@ -58,7 +58,6 @@ public class Member {
             throw new IllegalArgumentException("Vælg en aktivitetstype.");
         }
 
-    public Member(int iD, String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership){
         this.iD = iD;
         this.name = name.strip();
         this.birthDate = birthDate;

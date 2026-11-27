@@ -32,7 +32,7 @@ public class Controller {
         return cashier.calculateMembershipFee(member, LocalDate.now());
     }
     public Member creatMember(int ID, String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership, ActivityType activityType){
-        return chairman.creatMember(ID, name, birthDate, address, email, phone, isActive, discipline, priceForMembership, activityType);
+        return chairman.creatMember(ID, name, birthDate, address, email, phone, isActive, discipline, priceForMembership, activityType);}
 
     //Indlæser medlemmerne fra filen og inddeler AthleteMembers i hold efter alder:
     public void sortAthletes()
