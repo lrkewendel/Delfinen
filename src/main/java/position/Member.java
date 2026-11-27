@@ -21,39 +21,19 @@ public class Member {
 
     public Member(int iD, String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership, ActivityType activityType) {
 
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Navn må ikke være tomt.");
-        }
-        if (name.chars().anyMatch(Character::isISOControl)) {
-            throw new IllegalArgumentException("Navn må ikke indeholde kontroltegn");
-        }
-        if (birthDate == null || birthDate.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Fødselsdato skal være i dag eller tidligere.");
-        }
-        if (iD <= 0) {
-            throw new IllegalArgumentException("Medlemsnummer skal være større end 0.");
-        }
-
-        if (address == null || address.isBlank()) {
-            throw new IllegalArgumentException("Adresse må ikke være tom.");
-        }
-
-        if (email == null || email.isBlank()) {
-            throw new IllegalArgumentException("Email må ikke være tom.");
-        }
-
-        if (phone <= 0) {
-            throw new IllegalArgumentException("Telefonnummer skal være et positivt tal.");
-        }
+        validateName(name);
+        validateBirthDate(birthDate);
+        validateID(iD);
+        validateAddress(address);
+        validateEmail(email);
+        validatePhone(phone);
 
         if (discipline == null) {
             throw new IllegalArgumentException("Vælg en disciplin.");
         }
-
         if (priceForMembership < 0) {
             throw new IllegalArgumentException("Kontingent må ikke være negativt.");
         }
-
         if (activityType == null) {
             throw new IllegalArgumentException("Vælg en aktivitetstype.");
         }
@@ -68,6 +48,51 @@ public class Member {
         this.discipline = discipline;
         this.priceForMembership = priceForMembership;
         this.activityType = activityType;
+    }
+
+    public static void validateName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Navn må ikke være tomt.");
+        }
+        String cleanedName = name.strip();
+        if(!cleanedName.matches("\\p{L}+(?:[ '\\-’]\\p{L}+)*")){
+            throw new IllegalArgumentException("Navnet skal bestå af bogstaver." + " Mellemrum, bindestreg og apostrof må kun stå mellem navnets dele, f.eks: Anne-Marie");
+        }
+    }
+
+    public static void validateBirthDate(LocalDate birthDate) {
+        if (birthDate == null || birthDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Fødselsdato skal være i dag eller tidligere.");
+        }
+    }
+
+    public static void validateID(int iD) {
+        if (iD <= 0) {
+            throw new IllegalArgumentException("Medlemsnummer skal være større end 0.");
+        }
+    }
+
+    public static void validateAddress(String address) {
+        if (address == null || address.isBlank()) {
+            throw new IllegalArgumentException("Adresse må ikke være tom.");
+        }
+    }
+
+    public static void validateEmail(String email) {
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException("Email må ikke være tom.");
+        }
+
+        if (!email.strip().matches("[^\\s@]+@[^\\s@.]+(?:\\.[^\\s@.]+)+")){
+            throw new IllegalArgumentException("Indast en gyldig email, fx Jens@gmail.com");
+        }
+    }
+
+    public static void validatePhone(int phone) {
+        if (phone <= 0) {
+            throw new IllegalArgumentException("Telefonnummer skal være et positivt tal.");
+        }
+
     }
 
     public int getiD() {
@@ -130,7 +155,7 @@ public class Member {
         return activityType;
     }
 
-    // Denne konstruktør antages gamle kald uden aktivitetstype som motionister
+//     Denne konstruktør antages gamle kald uden aktivitetstype som motionister
     public Member(int iD, String name, LocalDate birthDate,
                   String address, String email, int phone,
                   boolean isActive, Discipline discipline,
