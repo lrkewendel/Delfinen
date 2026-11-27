@@ -22,6 +22,7 @@ public class Controller {
     private final Trainer trainer = new Trainer(swimTeam);
     private final Cashier cashier = new Cashier();
     private final Chairman chairman = new Chairman();
+    private List<Member> loadedMembers = new ArrayList<>();
 
     public List<Member> getMembers() {
         return chairman.getListOfMembers();
@@ -31,13 +32,13 @@ public class Controller {
         return cashier.calculateMembershipFee(member, LocalDate.now());
     }
     public Member creatMember(int ID, String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership, ActivityType activityType){
-        return chairman.creatMember(ID, name, birthDate, address, email, phone, isActive, discipline, priceForMembership, activityType);
+        return chairman.creatMember(ID, name, birthDate, address, email, phone, isActive, discipline, priceForMembership, activityType);}
 
     //Indlæser medlemmerne fra filen og inddeler AthleteMembers i hold efter alder:
     public void sortAthletes()
-        throws FileNotFoundException{
-        List<Member> members = fileHandler.loadMembers();
-        swimTeam.sortMembers(members);
+            throws FileNotFoundException {
+        loadedMembers = fileHandler.loadMembers();
+        swimTeam.sortMembers(loadedMembers);
     }
 
     public Map<Discipline, List<AthleteMember>> getTop5Senior() {return trainer.getTop5Senior();}
@@ -50,9 +51,23 @@ public class Controller {
 
     public List<AthleteMember> getJuniorTeam(){return swimTeam.getJuniorTeam();}
 
-    public void registerTrainingResult(AthleteMember athlete, int newTime) {trainer.registerTrainingResult(athlete, newTime);}
+    public boolean registerTrainingResult(AthleteMember athlete, int newTime, LocalDate date) {
+        boolean isBetter = trainer.registerTrainingResult(athlete, newTime, date);
+        if (isBetter) {
+            saveLoadedMembers();
+        }
+        return isBetter;
+    }
 
-    public void registerCompetitionResult(AthleteMember athlete, int newTime) {trainer.registerCompetitionResult(athlete, newTime);}
+    public void registerCompetitionResult(AthleteMember athlete, int newTime) {trainer.registerCompetitionResult(athlete, newTime); saveLoadedMembers();}
+
+    private void saveLoadedMembers() {
+        try {
+            if (!loadedMembers.isEmpty()) {
+                fileHandler.saveMembers(loadedMembers);
+            }
+        } catch (Exception e) {}
+    }
 
     public AthleteMember findAthleteByID(int iD) {
         for (AthleteMember athlete : trainer.getSeniorTeam()) {
