@@ -17,6 +17,7 @@ public class Member {
     private boolean isActive;
     private Discipline discipline;
     private int priceForMembership;
+    private boolean paid = false;
     private ActivityType activityType;
 
     public Member(int iD, String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership, ActivityType activityType) {
@@ -164,5 +165,11 @@ public class Member {
         this(iD, name, birthDate, address, email, phone,
                 isActive, discipline, priceForMembership,
                 ActivityType.RECREATIONAL);
+    }
+    public boolean isPaid() {
+        return paid;
+    }
+    public void registerPayment() {
+        paid = true;
     }
 }

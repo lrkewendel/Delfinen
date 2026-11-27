@@ -62,10 +62,10 @@ public class SwimTeamTest {
     @Test
     void testGetTop5SeniorAndJunior_SeparatesTeamsCorrectly() {
         List<Member> membersFromFile = new ArrayList<>();
-        membersFromFile.add(createAthleteMember(1, "Junior 1", 17, Discipline.BUTTERFLY, 5000, 5200));
-        membersFromFile.add(createAthleteMember(2, "Junior 2", 15, Discipline.BUTTERFLY, 4900, 0));
-        membersFromFile.add(createAthleteMember(3, "Senior 1 (grænse 18 år)", 18, Discipline.BUTTERFLY, 4700, 4800));
-        membersFromFile.add(createAthleteMember(4, "Senior 2", 25, Discipline.BUTTERFLY, 4600, 5500));
+        membersFromFile.add(createAthleteMember(1, "Anna", 17, Discipline.BUTTERFLY, 5000, 5200));
+        membersFromFile.add(createAthleteMember(2, "Frederik", 15, Discipline.BUTTERFLY, 4900, 0));
+        membersFromFile.add(createAthleteMember(3, "Zenia", 18, Discipline.BUTTERFLY, 4700, 4800));
+        membersFromFile.add(createAthleteMember(4, "Sonja", 25, Discipline.BUTTERFLY, 4600, 5500));
 
         swimTeam.sortMembers(membersFromFile);
         Map<Discipline, List<AthleteMember>> top5Senior = swimTeam.getTop5Senior();

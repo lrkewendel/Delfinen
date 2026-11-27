@@ -135,14 +135,14 @@ public class FileHandlerTest {
         // Arrange:
         FileHandler fileHandler = new FileHandler(TEST_FILE);
         PrintStream out = new PrintStream(new File(TEST_FILE), "UTF-8");
-        out.println("iD;name;birthDate;address;email;phone;isActive;discipline;priceForMembership;trainingResult;trainingDate;competitionResult");
+        out.println("iD;name;birthDate;address;email;phone;isActive;discipline;priceForMembership;trainingResult;trainingDate;competitionResult;paid");
 
-        out.println("1;Asker;1997-12-12;Kongensgade 1;Asker12@hotmail.com;78958900;true;CRAWL;1500;;;");
-        out.println("1;Bo;1997-12-10;Dronningegade 1;Bobo@hotmail.com;20445566;false;BACKSTROKE;500;;;");
-        out.println("1;Maiken;2000-12-12;Nørrebro 1;Maik12en@hotmail.com;23068900;false;BACKSTROKE;500;;;");
-        out.println("1;Jens;1997-05-12;Amagerbrogade 1;Jens2@hotmail.com;23556700;true;BUTTERFLY;2000;10;2026-11-20;20");
+        out.println("1;Asker;1997-12-12;Kongensgade 1;Asker12@hotmail.com;78958900;true;CRAWL;1500;;;;false");
+        out.println("1;Bo;1997-12-10;Dronningegade 1;Bobo@hotmail.com;20445566;false;BACKSTROKE;500;;;;false");
+        out.println("1;Maiken;2000-12-12;Nørrebro 1;Maik12en@hotmail.com;23068900;false;BACKSTROKE;500;;;;false");
+        out.println("1;Jens;1997-05-12;Amagerbrogade 1;Jens2@hotmail.com;23556700;true;BUTTERFLY;2000;10;2026-11-20;20;true");
 
-        out.println("IKKE_ET_TAL;Bo;1997-12-10;Dronningegade 1;Bobo@hotmail.com;20445566;false;BACKSTROKE;500;;;");
+        out.println("IKKE_ET_TAL;Bo;1997-12-10;Dronningegade 1;Bobo@hotmail.com;20445566;false;BACKSTROKE;500;;;;false");
         out.println("3;Maiken;ugyldig-dato");
 
         out.close();
