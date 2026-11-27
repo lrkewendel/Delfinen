@@ -17,6 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 public class UserInterface {
 
@@ -41,6 +43,7 @@ public class UserInterface {
             String chosenPosition = scanner.nextLine();
 
             if (chosenPosition.equalsIgnoreCase("Formand")) {
+                System.out.println("Vælge opret eller se som kasserer / træner ");
                 String choice = scanner.nextLine();
                 switch (choice) {
                     // NYT: Starter medlemsoprettelsen
@@ -50,6 +53,7 @@ public class UserInterface {
             }
 
             if (chosenPosition.equalsIgnoreCase("Kasserer")) {
+                System.out.println("Vælg Se som kasserer");
                 String choice = scanner.nextLine();
                 switch (choice) {
                     case "Se" -> showMembershipFees();
@@ -58,13 +62,12 @@ public class UserInterface {
             }
 
             if (chosenPosition.equalsIgnoreCase("Træner")) {
-
                 System.out.println("Vælg en af følgende handlinger: ");
                 System.out.println("| Se oversigt over Top 5 | Registrer en svømmetid |");
                 String choice = scanner.nextLine();
 
                 switch (choice.toLowerCase()) {
-                    case "se", "se oversigt over top 5" -> showTop5();
+                    case "se", "se oversigt over top 5" , "top 5" -> showTop5();
                     case "registrer", "registrer en svømmetid" -> registerSwimResult();
                     default -> System.out.println("Den handling er desværre ikke mulig. Prøv igen!");
                 }
@@ -77,12 +80,12 @@ public class UserInterface {
         while (true) {
             System.out.println("Opret nyt medlem");
 
-            int iD = readInt("Indtast medlemsnummer:");
-            String name = readText("Indtast medlemmets navn:");
+            int iD = readInt("Indtast medlemsnummer:", Member::validateID);
+            String name = readText("Indtast medlemmets navn:", Member::validateName);
             LocalDate birthDate = readBirthDate();
-            String address = readText("Indtast adresse:");
-            String email = readText("Indtast email:");
-            int phone = readInt("Indtast telefonnummer:");
+            String address = readText("Indtast adresse:", Member::validateAddress);
+            String email = readText("Indtast email:", Member::validateEmail);
+            int phone = readInt("Indtast telefonnummer:", Member::validatePhone);
 
             boolean isActive = readMembershipType();
             ActivityType activityType = readActivityType();
@@ -106,21 +109,33 @@ public class UserInterface {
         }
     }
 
-    // NYT: Læser tekst. Member validere indholdet
-    private String readText(String message) {
-        System.out.println(message);
-        return scanner.nextLine();
+    // Gentager kun det aktuelle felt, indtil Members validering accepterer det.
+    private String readText(String message, Consumer<String> validator) {
+        while (true) {
+            System.out.println(message);
+            String input = scanner.nextLine();
+            try {
+                validator.accept(input);
+                return input;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     // NYT: Omdanner brugerens input til et heltal
-    private int readInt(String message) {
+    private int readInt(String message, IntConsumer validator) {
         while (true) {
             System.out.println(message);
 
             try {
-                return Integer.parseInt(scanner.nextLine().strip());
+                int input = Integer.parseInt(scanner.nextLine().strip());
+                validator.accept(input);
+                return input;
             } catch (NumberFormatException e) {
-                System.out.println("Indast et gyldigt heltal.");
+                System.out.println("Indtast et gyldigt heltal.");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -130,9 +145,13 @@ public class UserInterface {
         while (true) {
             System.out.println("Indast fødselsdato (åååå-mm-dd): ");
             try {
-                return LocalDate.parse(scanner.nextLine().strip());
+                LocalDate birthDate = LocalDate.parse(scanner.nextLine().strip());
+                Member.validateBirthDate(birthDate);
+                return birthDate;
             } catch (DateTimeParseException e) {
                 System.out.println("Ugyldig dato. Skriv eksempelvis 2003-03-03");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
