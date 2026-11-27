@@ -3,6 +3,7 @@ package position;
 import DelfinenSwimTypes.Discipline;
 import DelfinenSwimTypes.SwimTeam;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +13,13 @@ public class Trainer {
 
     public Trainer(SwimTeam swimTeam){this.swimTeam = swimTeam;}
 
-    public void registerTrainingResult(AthleteMember athleteMember, int newTime){
-        if(newTime > 0 && (athleteMember.getTrainingResult() <=0 || newTime < athleteMember.getTrainingResult())){
+    public boolean registerTrainingResult(AthleteMember athleteMember, int newTime, LocalDate date) {
+        if (newTime > 0 && (athleteMember.getTrainingResult() <= 0 || newTime < athleteMember.getTrainingResult())) {
             athleteMember.setTrainingResult(newTime);
+            athleteMember.setTrainingDate(date);
+            return true;
         }
+        return false;
     }
 
     public void registerCompetitionResult(AthleteMember athleteMember, int newTime){

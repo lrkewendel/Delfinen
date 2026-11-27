@@ -11,9 +11,11 @@ public class SwimTeam {
     private List<AthleteMember> seniorTeam = new ArrayList<>();
     private List<AthleteMember> juniorTeam = new ArrayList<>();
 
-    public SwimTeam(){}
+    public SwimTeam() {}
 
     public void sortMembers(List<Member> MembersFromFile) {
+        seniorTeam.clear();
+        juniorTeam.clear();
 
         for (Member member : MembersFromFile) {
             if (member instanceof AthleteMember athleteMember) {
@@ -26,34 +28,36 @@ public class SwimTeam {
         }
     }
 
-    public List<AthleteMember> getTop5ForDiscipline (List<AthleteMember> team, Discipline discipline){
+    public List<AthleteMember> getTop5ForDiscipline(List<AthleteMember> team, Discipline discipline) {
         return team.stream()
                 .filter(athleteMember -> athleteMember.getDiscipline() == discipline)
-                .filter(athleteMember -> athleteMember.getResults() > 0)
-                .sorted(Comparator.comparingInt(AthleteMember::getResults))
+                .filter(athleteMember -> athleteMember.getTrainingResult() > 0)
+                .sorted(Comparator.comparingInt(AthleteMember::getTrainingResult))
                 .limit(5)
                 .toList();
     }
 
-    public Map<Discipline, List<AthleteMember>> getTop5Senior(){
+    public Map<Discipline, List<AthleteMember>> getTop5Senior() {
         Map<Discipline, List<AthleteMember>> top5Map = new EnumMap<>(Discipline.class);
-        for (Discipline discipline : Discipline.values()){
+        for (Discipline discipline : Discipline.values()) {
             top5Map.put(discipline, getTop5ForDiscipline(seniorTeam, discipline));
-        } return top5Map;
+        }
+        return top5Map;
     }
 
-    public Map<Discipline, List<AthleteMember>> getTop5Junior(){
+    public Map<Discipline, List<AthleteMember>> getTop5Junior() {
         Map<Discipline, List<AthleteMember>> top5Map = new EnumMap<>(Discipline.class);
-        for (Discipline discipline : Discipline.values()){
+        for (Discipline discipline : Discipline.values()) {
             top5Map.put(discipline, getTop5ForDiscipline(juniorTeam, discipline));
-        } return top5Map;
+        }
+        return top5Map;
     }
 
-    public List<AthleteMember> getSeniorTeam(){
+    public List<AthleteMember> getSeniorTeam() {
         return seniorTeam;
     }
 
-    public List<AthleteMember> getJuniorTeam(){
+    public List<AthleteMember> getJuniorTeam() {
         return juniorTeam;
     }
 }

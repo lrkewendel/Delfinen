@@ -7,6 +7,9 @@ import datasource.FileHandler;
 
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +88,7 @@ public class UserInterface {
     }
 
     private void printTop5Team(String teamTitle, Map<Discipline, List<AthleteMember>> top5Map){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         System.out.println("\n=== Top 5 over: " + teamTitle + " ===");
 
         for(Discipline discipline : Discipline.values()){
@@ -103,10 +107,13 @@ public class UserInterface {
     }
 
     private void registerSwimResult(){
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
         try{
             controller.sortAthletes();
         } catch (FileNotFoundException e){
-            System.out.println("Medlemmer kunne desvære ikke indlæses.");
+            System.out.println("Medlemmer kunne ikke indlæses.");
             return;
         }
 
@@ -126,7 +133,7 @@ public class UserInterface {
         }
 
         System.out.println("Du har valgt: " + athleteMember.getName() + ". (Aktiv i disciplin: " + athleteMember.getDiscipline() + ").");
-        System.out.println("Vælg en disciplin (BUTTERFLY, CRAWL, BACKSTROKE, BREASTSTROKE): ");
+        System.out.println("Vælg en disciplin: | BUTTERFLY | CRAWL | BACKSTROKE | BREASTSTROKE |.");
         Discipline chosenDiscipline;
         try{
             chosenDiscipline = Discipline.valueOf(scanner.nextLine().trim().toUpperCase());
@@ -143,24 +150,37 @@ public class UserInterface {
         System.out.println("Er det træningstiden eller stævnetiden, der skal ændres?");
         String type = scanner.nextLine();
 
-        try{
-            if(type.equalsIgnoreCase("Træningstiden")){
-                System.out.println("Indtast tid i sekunder: ");
-                int newTime = Integer.parseInt(scanner.nextLine());
+        try {
+            if (type.equalsIgnoreCase("Træningstiden")) {
+                System.out.println("Indtast tid i 100 sekund (fx 6532 for 01:05.32): ");
+                int newTime = Integer.parseInt(scanner.nextLine().trim());
 
-                controller.registerTrainingResult(athleteMember, newTime);
-                System.out.println("Tiden er registreret.");
-            } else if(type.equalsIgnoreCase("Stævnetiden")) {
-                System.out.println("Indtast tid i sekunder: ");
-                int newTime = Integer.parseInt(scanner.nextLine());
+                System.out.println("Indtast dato (dd-MM-yyyy): ");
+                LocalDate date = LocalDate.parse(scanner.nextLine().trim(), formatter);
+
+                boolean isBetter = controller.registerTrainingResult(athleteMember, newTime, date);
+
+                if (isBetter) {
+                    System.out.println("Ny træningstid er registreret: " + formatTime(athleteMember.getTrainingResult()) + " (" + date.format(formatter) + ").");
+                } else {
+                    String oldDate = (athleteMember.getTrainingDate() != null) ? athleteMember.getTrainingDate().format(formatter) : "ukendt dato";
+                    System.out.println("Tiden er ikke bedre end svømmerens nuværende bedste tid (" + formatTime(athleteMember.getTrainingResult()) + " fra " + oldDate + "). Den gamle tid beholdes.");
+                }
+
+            } else if (type.equalsIgnoreCase("Stævnetiden")) {
+                System.out.println("Indtast tid i 100 sekund (fx 6532 for 01:05.32): ");
+                int newTime = Integer.parseInt(scanner.nextLine().trim());
 
                 controller.registerCompetitionResult(athleteMember, newTime);
                 System.out.println("Tiden er registreret.");
+
             } else {
                 System.out.println("Ugyldigt valg! Indtast (træningstiden) eller (stævnetiden).");
             }
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println("Tiden skal være et helt tal.");
+        } catch (DateTimeParseException e) {
+            System.out.println("Ugyldig dato! Brug formatet dd-MM-yyyy (fx 27-11-2026).");
         }
     }
 
@@ -172,8 +192,26 @@ public class UserInterface {
             return;
         }
 
+        System.out.println("Vælg en disciplin: | BUTTERFLY | CRAWL | BACKSTROKE | BREASTSTROKE |.");
+        Discipline chosenDiscipline;
+        try {
+            chosenDiscipline = Discipline.valueOf(scanner.nextLine().trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Det er ikke en gyldig disciplin.");
+            return;
+        }
+
+
         printTop5Team("Juniorholdet", controller.getTop5Junior());
         printTop5Team("Seniorholdet", controller.getTop5Senior());
+    }
+
+    private String formatTime(int timeInHundredths) {
+        if (timeInHundredths <= 0) return "Ingen tid registreret";
+        int minutes = timeInHundredths / 6000;
+        int seconds = (timeInHundredths % 6000) / 100;
+        int hundredths = timeInHundredths % 100;
+        return String.format("%02d:%02d.%02d", minutes, seconds, hundredths);
     }
 
     private void welcomeMessage(){
