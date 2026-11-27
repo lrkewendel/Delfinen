@@ -3,6 +3,7 @@ package UI;
 import domainmodel.Controller;
 import position.ActivityType;
 import datasource.FileHandler;
+import position.AthleteMember;
 import position.Member;
 import DelfinenSwimTypes.Discipline;
 
