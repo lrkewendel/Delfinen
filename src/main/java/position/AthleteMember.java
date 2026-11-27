@@ -9,6 +9,9 @@ public class AthleteMember extends Member{
     private int trainingResult;
     private int competitionResult;
 
+    public AthleteMember(int iD, String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership, Trainer trainer, int trainingResult, int competitionResult, String succession){
+        super(iD, name, birthDate, address, email, phone, isActive, discipline, priceForMembership, ActivityType.COMPETITIVE);
+        this.trainer = trainer;
     public AthleteMember(int iD, String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership, int trainingResult, int competitionResult){
         super(iD, name, birthDate, address, email, phone, isActive, discipline, priceForMembership);
         this.trainingResult = trainingResult;

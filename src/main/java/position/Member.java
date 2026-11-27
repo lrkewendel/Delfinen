@@ -17,31 +17,74 @@ public class Member {
     private boolean isActive;
     private Discipline discipline;
     private int priceForMembership;
+    private ActivityType activityType;
+
+    public Member(int iD, String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership, ActivityType activityType) {
+
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Navn må ikke være tomt.");
+        }
+        if (name.chars().anyMatch(Character::isISOControl)) {
+            throw new IllegalArgumentException("Navn må ikke indeholde kontroltegn");
+        }
+        if (birthDate == null || birthDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Fødselsdato skal være i dag eller tidligere.");
+        }
+        if (iD <= 0) {
+            throw new IllegalArgumentException("Medlemsnummer skal være større end 0.");
+        }
+
+        if (address == null || address.isBlank()) {
+            throw new IllegalArgumentException("Adresse må ikke være tom.");
+        }
+
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException("Email må ikke være tom.");
+        }
+
+        if (phone <= 0) {
+            throw new IllegalArgumentException("Telefonnummer skal være et positivt tal.");
+        }
+
+        if (discipline == null) {
+            throw new IllegalArgumentException("Vælg en disciplin.");
+        }
+
+        if (priceForMembership < 0) {
+            throw new IllegalArgumentException("Kontingent må ikke være negativt.");
+        }
+
+        if (activityType == null) {
+            throw new IllegalArgumentException("Vælg en aktivitetstype.");
+        }
 
     public Member(int iD, String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership){
         this.iD = iD;
-        this.name = name;
+        this.name = name.strip();
         this.birthDate = birthDate;
-        this.address = address;
-        this.email = email;
+        this.address = address.strip();
+        this.email = email.strip();
         this.phone = phone;
         this.isActive = isActive;
         this.discipline = discipline;
         this.priceForMembership = priceForMembership;
+        this.activityType = activityType;
     }
 
-    public int getiD() {return iD;}
+    public int getiD() {
+        return iD;
+    }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public LocalDate birthDate(){
+    public LocalDate birthDate() {
         return birthDate;
     }
 
-    public int getAge(){
-       return Period.between (birthDate, LocalDate.now()).getYears();
+    public int getAge() {
+        return Period.between(birthDate, LocalDate.now()).getYears();
     }
 
     public String getAddress() {
@@ -52,15 +95,19 @@ public class Member {
         return email;
     }
 
-    public int getPhone() {return phone;}
+    public int getPhone() {
+        return phone;
+    }
 
-    public boolean isActive(){return isActive;}
+    public boolean isActive() {
+        return isActive;
+    }
 
     public Discipline getDiscipline() {
         return discipline;
     }
 
-    public int getPriceForMembership(){
+    public int getPriceForMembership() {
         priceForMembership = calculateFee(LocalDate.now());
         return priceForMembership;
     }
@@ -78,5 +125,20 @@ public class Member {
             return 1200;
         }
         return 1600;
+    }
+
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    // Denne konstruktør antages gamle kald uden aktivitetstype som motionister
+    public Member(int iD, String name, LocalDate birthDate,
+                  String address, String email, int phone,
+                  boolean isActive, Discipline discipline,
+                  int priceForMembership) {
+
+        this(iD, name, birthDate, address, email, phone,
+                isActive, discipline, priceForMembership,
+                ActivityType.RECREATIONAL);
     }
 }
