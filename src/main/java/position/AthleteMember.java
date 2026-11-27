@@ -31,7 +31,19 @@ public class AthleteMember extends Member{
         return competitionResult;
     }
 
-    public String getSuccession(){
-        return succession;
+    public void setTrainingResult(int trainingResult) {
+        this.trainingResult = trainingResult;
     }
+
+    public void setCompetitionResult(int competitionResult) {
+        this.competitionResult = competitionResult;
+    }
+
+    public int getResults(){
+        if (trainingResult <= 0) return competitionResult;
+        if (competitionResult <= 0) return trainingResult;
+        return Math.min(trainingResult, competitionResult);
+    }
+
+    public boolean isActiveInDiscipline(Discipline discipline){return getDiscipline() == discipline;}
 }

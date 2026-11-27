@@ -61,7 +61,7 @@ public class Member {
         this.iD = iD;
         this.name = name.strip();
         this.birthDate = birthDate;
-        this.address = address.strip();
+        this.address = address;
         this.email = email.strip();
         this.phone = phone;
         this.isActive = isActive;
@@ -70,20 +70,18 @@ public class Member {
         this.activityType = activityType;
     }
 
-    public int getiD() {
-        return iD;
-    }
+    public int getiD() {return iD;}
 
-    public String getName() {
+    public String getName(){
         return name;
     }
 
-    public LocalDate birthDate() {
+    public LocalDate birthDate(){
         return birthDate;
     }
 
-    public int getAge() {
-        return Period.between(birthDate, LocalDate.now()).getYears();
+    public int getAge(){
+       return Period.between (birthDate, LocalDate.now()).getYears();
     }
 
     public String getAddress() {
@@ -94,19 +92,15 @@ public class Member {
         return email;
     }
 
-    public int getPhone() {
-        return phone;
-    }
+    public int getPhone() {return phone;}
 
-    public boolean isActive() {
-        return isActive;
-    }
+    public boolean isActive(){return isActive;}
 
     public Discipline getDiscipline() {
         return discipline;
     }
 
-    public int getPriceForMembership() {
+    public int getPriceForMembership(){
         priceForMembership = calculateFee(LocalDate.now());
         return priceForMembership;
     }
