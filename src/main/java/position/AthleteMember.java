@@ -7,11 +7,13 @@ import java.time.LocalDate;
 public class AthleteMember extends Member{
 
     private int trainingResult;
+    private LocalDate trainingDate;
     private int competitionResult;
 
-    public AthleteMember(int iD, String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership, int trainingResult, int competitionResult){
+    public AthleteMember(int iD, String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership, int trainingResult, LocalDate trainingDate, int competitionResult){
         super(iD, name, birthDate, address, email, phone, isActive, discipline, priceForMembership);
         this.trainingResult = trainingResult;
+        this.trainingDate = trainingDate;
         this.competitionResult = competitionResult;
     }
 
@@ -21,6 +23,8 @@ public class AthleteMember extends Member{
         return trainingResult;
     }
 
+    public LocalDate getTrainingDate(){ return trainingDate;}
+
     public int getCompetitionResult() {
         return competitionResult;
     }
@@ -28,6 +32,8 @@ public class AthleteMember extends Member{
     public void setTrainingResult(int trainingResult) {
         this.trainingResult = trainingResult;
     }
+
+    public void setTrainingDate(LocalDate trainingDate) {this.trainingDate = trainingDate;}
 
     public void setCompetitionResult(int competitionResult) {
         this.competitionResult = competitionResult;
