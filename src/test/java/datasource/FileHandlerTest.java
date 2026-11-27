@@ -32,10 +32,10 @@ public class FileHandlerTest {
         FileHandler fileHandler = new FileHandler(TEST_FILE);
         List<Member> members = new ArrayList<>();
 
-        Member member1 = new Member(1, "Asker", LocalDate.of(1997,12,12), "Kongensgade 1", "Asker12@hotmail.com", 78958900, true, Discipline.CRAWL, 1500);
+        Member member1 = new Member(1, "Asker", LocalDate.of(1997,12,12), "Kongensgade 1", "Asker12@hotmail.com", 78958900, true, Discipline.CRAWL, 1600);
         Member member2 = new Member(2, "Bo", LocalDate.of(1997, 12, 10), "Dronningegade 1", "Bobo@hotmail.com", 20445566, false, Discipline.BACKSTROKE, 500);
         Member member3 = new Member(3, "Maiken", LocalDate.of(2000, 12, 12), "Nørrebro 1", "Maik12en@hotmail.com", 23068900, false, Discipline.BACKSTROKE, 500);
-        Member member4 = new AthleteMember(49, "Jens", LocalDate.of(1997, 05, 12), "Amagerbrogade 1", "Jens2@hotmail.com", 23556700, true, Discipline.BUTTERFLY, 2000, null, 10, 20, null);
+        Member member4 = new AthleteMember(49, "Jens", LocalDate.of(1997, 05, 12), "Amagerbrogade 1", "Jens2@hotmail.com", 23556700, true, Discipline.BUTTERFLY, 1600, 10, 20);
 
         members.add(member1);
         members.add(member2);
@@ -59,7 +59,7 @@ public class FileHandlerTest {
         assertEquals(78958900, loadedFirst.getPhone());
         assertEquals(true, loadedFirst.isActive());
         assertEquals(Discipline.CRAWL, loadedFirst.getDiscipline());
-        assertEquals(1500, loadedFirst.getPriceForMembership());
+        assertEquals(1600, loadedFirst.getPriceForMembership());
 
         Member loadedSecond = loadedMembers.get(1);
 
@@ -95,11 +95,9 @@ public class FileHandlerTest {
         assertEquals(23556700, loadedFourth.getPhone());
         assertEquals(true, loadedFourth.isActive());
         assertEquals(Discipline.BUTTERFLY, loadedFourth.getDiscipline());
-        assertEquals(2000, loadedFourth.getPriceForMembership());
-        assertEquals(null, loadedFourth.getTrainer());
+        assertEquals(1600, loadedFourth.getPriceForMembership());
         assertEquals(10, loadedFourth.getTrainingResult());
         assertEquals(20, loadedFourth.getCompetitionResult());
-        assertEquals(null, loadedFourth.getSuccession());
     }
 
     @Test
