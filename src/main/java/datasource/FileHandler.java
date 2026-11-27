@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class FileHandler {
 
     private String fileName;
-    private static final String HEADER = "iD;name;birthDate;address;email;phone;isActive;discipline;priceForMembership;trainingResult;trainingDate;competitionResult";
+    private static final String HEADER = "iD;name;birthDate;address;email;phone;isActive;discipline;priceForMembership;trainingResult;trainingDate;competitionResult;paid";
     private int skippedLineCount;
 
     public FileHandler(String fileName) {
@@ -59,7 +59,8 @@ public class FileHandler {
                 +member.getPriceForMembership() + ";"
                 +trainingResult + ";"
                 +trainingDate + ";"
-                +competitionResult;
+                +competitionResult + ";"
+                +member.isPaid();
     }
 
     public int getSkippedLineCount() {
@@ -99,7 +100,7 @@ public class FileHandler {
     private Member parseMember(String line) {
         String[] fields = line.split(";", -1);
 
-        if (fields.length != 12) {
+        if (fields.length != 13) {
             return null;
         }
 
@@ -114,15 +115,26 @@ public class FileHandler {
             Discipline discipline = Discipline.valueOf(fields[7]);
             int priceForMembership = Integer.parseInt(fields[8]);
 
+            if (!fields[12].equalsIgnoreCase("true") && !fields[12].equalsIgnoreCase("false")) {
+                return null;
+            }
+            boolean paid = Boolean.parseBoolean(fields[12]);
+            Member member;
+
             if (!fields[9].isEmpty() && !fields[11].isEmpty()) {
                 int trainingResult = Integer.parseInt(fields[9]);
                 LocalDate trainingDate = fields[10].isEmpty() ? null : LocalDate.parse(fields[10]);
                 int competitionResult = Integer.parseInt(fields[11]);
 
-                return new AthleteMember(iD, name, birthDate, address, email, phone, isActive, discipline, priceForMembership, trainingResult, trainingDate, competitionResult);
-            } else {
-                return new Member(iD, name, birthDate, address, email, phone, isActive, discipline, priceForMembership);
+                member = new AthleteMember(iD, name, birthDate, address, email, phone, isActive, discipline, priceForMembership, trainingResult, trainingDate, competitionResult);
             }
+            else {
+                member = new Member(iD, name, birthDate, address, email, phone, isActive, discipline, priceForMembership);
+            }
+            if (paid) {
+                member.registerPayment();
+            }
+            return member;
         } catch (IllegalArgumentException | DateTimeParseException e) {
             return null;
         }

@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.io.IOException;
 
 
 public class Controller {
@@ -22,7 +23,7 @@ public class Controller {
     private final Trainer trainer = new Trainer(swimTeam);
     private final Cashier cashier = new Cashier();
     private final Chairman chairman = new Chairman();
-    private List<Member> loadedMembers = new ArrayList<>();
+    private List<Member> loadedMembers = chairman.getListOfMembers();
 
     public List<Member> getMembers() {
         return chairman.getListOfMembers();
@@ -31,14 +32,17 @@ public class Controller {
     public int getMembershipFee(Member member) {
         return cashier.calculateMembershipFee(member, LocalDate.now());
     }
-    public Member creatMember(int ID, String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership, ActivityType activityType){
-        return chairman.creatMember(ID, name, birthDate, address, email, phone, isActive, discipline, priceForMembership, activityType);
-    }
+    public Member creatMember(int ID, String name, LocalDate birthDate, String address, String email, int phone, boolean isActive, Discipline discipline, int priceForMembership, ActivityType activityType) throws IOException {
+        Member member = chairman.creatMember(ID, name, birthDate, address, email, phone, isActive, discipline, priceForMembership, activityType);
+        saveMembers();
+        return member;
+        }
 
-    public boolean registerPayment (int memberId) {
-        for (Member member : chairman.getListOfMembers()) {
+    public boolean registerPayment (int memberId) throws IOException {
+        for (Member member : loadedMembers) {
             if (member.getiD() == memberId) {
                 cashier.managePayment(member);
+                saveMembers();
                 return true;
             }
         }
@@ -48,7 +52,6 @@ public class Controller {
     //Indlæser medlemmerne fra filen og inddeler AthleteMembers i hold efter alder:
     public void sortAthletes()
             throws FileNotFoundException {
-        loadedMembers = fileHandler.loadMembers();
         swimTeam.sortMembers(loadedMembers);
     }
 
@@ -71,6 +74,20 @@ public class Controller {
     }
 
     public void registerCompetitionResult(AthleteMember athlete, int newTime) {trainer.registerCompetitionResult(athlete, newTime); saveLoadedMembers();}
+
+    public void loadMembers() throws IOException {
+        List<Member> members = fileHandler.loadMembers();
+
+        if (fileHandler.getSkippedLineCount() > 0) {
+            throw new IOException("Nogle medlemsdata kunne ikke indlæses. Kontroller CSV-filen");
+        }
+        loadedMembers.clear();
+        loadedMembers.addAll(members);
+    }
+
+    public void saveMembers () throws IOException {
+        fileHandler.saveMembers(loadedMembers);
+    }
 
     private void saveLoadedMembers() {
         try {

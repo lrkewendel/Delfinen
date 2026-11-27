@@ -13,7 +13,7 @@ public class CashierTest {
 
     @BeforeEach
     void setUp() {
-        member = new Member(1, "Test", LocalDate.of(2000, 1, 1), "Test 1", "test@", 12345678, true, Discipline.CRAWL, 0);
+        member = new Member(1, "Test", LocalDate.of(2000, 1, 1), "Test 1", "test@test.dk", 12345678, true, Discipline.CRAWL, 0);
         cashier = new Cashier();
     }
 

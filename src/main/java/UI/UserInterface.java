@@ -5,7 +5,6 @@ import domainmodel.Controller;
 import position.*;
 import datasource.FileHandler;
 import DelfinenSwimTypes.Discipline;
-
 import java.lang.classfile.attribute.SourceDebugExtensionAttribute;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
@@ -19,6 +18,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.function.IntConsumer;
+import java.io.IOException;
 
 public class UserInterface {
 
@@ -34,6 +34,15 @@ public class UserInterface {
     public void startProgram() {
         boolean running = true;
         welcomeMessage();
+        try {
+            controller.loadMembers();
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("Ingen medlemsfil fundet. Tom medlemsliste kører.");
+        } catch (IOException e) {
+            System.out.println("Medlemmerne kunne ikke indlæses: " + e.getMessage());
+            return;
+        }
 
         while (running) {
 
@@ -83,17 +92,20 @@ public class UserInterface {
 
         try {
             memberId = Integer.parseInt(scanner.nextLine().trim());
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             System.out.println("Medlemsnummer skal være helt tal...");
             return;
         }
-        boolean registered = controller.registerPayment(memberId);
-        if (registered) {
-            System.out.println("Betalingen er registreret for medlem " + memberId);
-        }
-        else {
-            System.out.println("Der findes ikke et medlem med det nummer " + memberId);
+        try {
+            boolean registered = controller.registerPayment(memberId);
+
+            if (registered) {
+                System.out.println("Betalingen er registreret for medlem " + memberId);
+            } else {
+                System.out.println("Der findes ikke et medlem med det nummer " + memberId);
+            }
+        } catch(IOException e){
+                System.out.println("Betalingen er registreret, men kunne ikke gemmes i filen");
         }
     }
 
@@ -127,6 +139,9 @@ public class UserInterface {
                 System.out.println("Medlemmet blev ikke oprettet: " + e.getMessage());
                 System.out.println("Indtast oplysningerne igen.");
 
+            } catch (IOException e) {
+                System.out.println("Medlemmet er oprettet, men kunne ikke gemmes i filen");
+                return;
             }
         }
     }
@@ -410,8 +425,8 @@ public class UserInterface {
 
         for (Member member : members) {
             int fee = controller.getMembershipFee(member);
-
-            System.out.println(member.getName() + ":" + fee);
+            String paymentStatus = member.isPaid() ? "Betalt" : "Ikke betalt";
+            System.out.println(member.getiD() + " | " + member.getName() + " | " + fee + " kr." + " | " +  paymentStatus);
         }
     }
 }
