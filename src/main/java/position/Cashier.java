@@ -2,8 +2,8 @@ package position;
 import java.time.LocalDate;
 public class Cashier {
 
-    public int managePayment(){
-        throw new UnsupportedOperationException("Ikke implementeret endnu");
+    public void managePayment(Member member){
+        member.registerPayment();
     }
 
     public int manageDiscount(){

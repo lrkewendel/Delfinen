@@ -62,9 +62,13 @@ public class UserInterface {
             }
 
             if (chosenPosition.equalsIgnoreCase("Kasserer")){
+                System.out.println("Vælg en af de følgende handlinger: ");
+                System.out.println("| Se kontingenter | Registrer betaling |");
+
                 String choice = scanner.nextLine();
                 switch (choice){
-                    case "Se" -> showMembershipFees();
+                    case "se" -> showMembershipFees();
+                    case "registrer", "registrer betaling" -> registerPayment();
                     default -> System.out.println("Den handling er desværre ikke mulig. Prøv igen!");
                 }
             }
@@ -81,6 +85,25 @@ public class UserInterface {
                     default -> System.out.println("Den handling er desværre ikke mulig. Prøv igen!");
                 }
             }
+        }
+    }
+    private void registerPayment() {
+        System.out.println("Indtast medlemsnummer:");
+        int memberId;
+
+        try {
+            memberId = Integer.parseInt(scanner.nextLine().trim());
+        }
+        catch (NumberFormatException e) {
+            System.out.println("Medlemsnummer skal være helt tal...");
+            return;
+        }
+        boolean registered = controller.registerPayment(memberId);
+        if (registered) {
+            System.out.println("Betalingen er registreret for medlem " + memberId);
+        }
+        else {
+            System.out.println("Der findes ikke et medlem med det nummer " + memberId);
         }
     }
 

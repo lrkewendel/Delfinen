@@ -25,6 +25,15 @@ public class Controller {
     public int getMembershipFee(Member member) {
         return cashier.calculateMembershipFee(member, LocalDate.now());
     }
+    public boolean registerPayment (int memberId) {
+        for (Member member : chairman.getListOfMembers()) {
+            if (member.getiD() == memberId) {
+                cashier.managePayment(member);
+                return true;
+            }
+        }
+        return false;
+    }
 
     //Indlæser medlemmerne fra filen og inddeler AthleteMembers i hold efter alder:
     public void sortAthletes()
